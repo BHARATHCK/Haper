@@ -1,0 +1,27 @@
+{
+    "name": "Haper",
+    "version": "1.0.0",
+    "description": "A Vanilla JS web project similar to BookMyShow",
+    "main": "index.js",
+    "scripts": {
+        "dev": "parcel serve src/index.html --port 3000",
+        "build": "parcel src/index.html",
+        "lint": "eslint \"src/**/*.js\""
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/BHARATHCK/Haper.git"
+    },
+    "author": "Bharath Chandra <bharathchandra541@gmail.com>",
+    "license": "MIT",
+    "devDependencies": {
+        "babel-eslint": "^10.1.0",
+        "eslint": "^7.0.0",
+        "eslint-plugin-import": "^2.20.2",
+        "parcel": "^1.12.4",
+        "prettier": "^2.0.5"
+    },
+    "dependencies": {
+        "nprogress": "^0.2.0"
+    }
+}
