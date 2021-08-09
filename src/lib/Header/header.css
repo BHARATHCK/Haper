@@ -1,12 +1,28 @@
 .header {
+    margin-right: 50px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     width: 100%;
     height: 64px;
     background: rgb(51, 53, 69);
     color: azure;
     margin: 0px;
     border: 0px;
+}
+
+.container-left {
+    margin-left: 50px;
+    padding: 0px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.container-right {
+    margin-right: 50px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
 }
 
 .searchbar {
@@ -18,8 +34,8 @@
     margin: 10px;
     opacity: 1;
     cursor: text;
-    width: calc(100% - 134px);
-    max-width: 549px;
+    max-width: 500px;
+    min-width: 60px;
     background-color: rgb(255, 255, 255);
     border: 1px solid rgb(238, 238, 238);
     border-radius: 4px;
@@ -62,6 +78,14 @@
     overflow: auto;
     border: 1px solid #ddd;
     z-index: 1;
+}
+
+.sort-down {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-box-align: center;
+    margin-bottom: 10px;
 }
 
 .sign-in {

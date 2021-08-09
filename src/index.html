@@ -12,29 +12,37 @@
     <link rel="stylesheet" href="./style.css">
     <link rel='stylesheet' type='text/css' media='screen' href='./lib/Header/header.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='./lib/footer/footer.css'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer"
+    />
 </head>
 
 <header class="header">
-    <img src="./assets/favicon.svg" alt="Haper Logo" width="70px" height="70px" style="padding: 5px;">
-    <input type="search" class="searchbar" />
-    <div class="dropdown">
-        <button onclick="myFunction()" class="dropbtn">Select City</button>
-        <i class="fas fa-chevron-right"></i>
-        <div id="locationDropdown" class="dropdown-content">
-            <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-            <a href="#about">About</a>
-            <a href="#base">Base</a>
-            <a href="#blog">Blog</a>
-            <a href="#contact">Contact</a>
-            <a href="#custom">Custom</a>
-            <a href="#support">Support</a>
-            <a href="#tools">Tools</a>
-        </div>
-    </div>
-    <button class="sign-in">Sign in</button>
-    <div class="hamburger-menu"><i class="fa fa-bars"></i></div>
 
+    <div class="container-left">
+        <img src="./assets/favicon.svg" alt="Haper Logo" width="70px" height="70px" style="padding: 5px;">
+        <input type="search" placeholder="SEARCH..." class="searchbar" />
+    </div>
+
+    <div class="container-right">
+        <div class="dropdown">
+            <button onclick="myFunction()" class="dropbtn">Select City</button>
+            <div class="sort-down">
+                <i class="fas fa-sort-down"></i>
+            </div>
+            <div id="locationDropdown" class="dropdown-content">
+                <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+                <a href="#about">About</a>
+                <a href="#base">Base</a>
+                <a href="#blog">Blog</a>
+                <a href="#contact">Contact</a>
+                <a href="#custom">Custom</a>
+                <a href="#support">Support</a>
+                <a href="#tools">Tools</a>
+            </div>
+        </div>
+        <button class="sign-in">Sign in</button>
+        <div class="hamburger-menu"><i class="fa fa-bars"></i></div>
+    </div>
 </header>
 
 <body>
