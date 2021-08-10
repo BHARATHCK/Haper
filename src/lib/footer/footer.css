@@ -3,4 +3,7 @@
     height: 64px;
     background: rgb(51, 53, 69);
     color: azure;
+    position: fixed;
+    left: 0;
+    bottom: 0;
 }

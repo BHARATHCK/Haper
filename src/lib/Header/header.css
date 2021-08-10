@@ -115,3 +115,49 @@
     background: rgb(31, 37, 51);
     padding: 0px;
 }
+
+.sub-header {
+    display: flex;
+    margin: 0px;
+    justify-content: left;
+}
+
+.sub-header a {
+    margin-right: 30px;
+    cursor: pointer;
+}
+
+.location-picker-card {
+    cursor: default;
+    width: 100%;
+    top: 65px;
+    border: 1px solid #f2f2f2;
+    text-align: center;
+    display: none;
+    background: #fff;
+    position: absolute;
+    right: 0;
+    left: 0;
+    margin: auto;
+    max-width: 980px;
+    min-height: 300px;
+    padding: 0!important;
+    z-index: 300;
+    border-radius: 3px;
+}
+
+.location-layout {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    -webkit-box-align: center;
+}
+
+.location-picker-card-animation {
+    animation: 500ms cubic-bezier(0.165, 0.84, 0.44, 1) 0ms 1 normal forwards running cNPryj;
+}
+
+svg {
+    width: 80px;
+    height: 80px;
+}
