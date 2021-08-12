@@ -1,8 +1,17 @@
+let ticketPrice;
+
 function renderTicketBookingPage(data) {
     console.log("BOOK TICKETS FOR ~~~~~~~~~~~ " + data.title);
 
     let theatre = document.createElement("div");
     theatre.className = "theatre";
+
+    // Test displaying movie name and cost of ticket.
+    let movieDetailsDiv = document.createElement("div");
+    movieDetailsDiv.className = "movie-container";
+    movieDetailsDiv.innerText = `Select seats for ${data.title} priced at ${randomTicketPrice(300,400)} INR/- Each.`;
+
+    theatre.appendChild(movieDetailsDiv);
 
     // Create a div for displaying seat topography
     let showcase = document.createElement("ul");
@@ -71,13 +80,36 @@ function renderTicketBookingPage(data) {
     // Text to diplay Price and seats selected
     let pTag = document.createElement("p");
     pTag.className = "text";
-    pTag.innerHTML = `You have selected <span id="count">0</span> seats for a price of $<span id="total">0</span>`;
+    pTag.innerHTML = `You have selected <span id="count">0</span> seats for a price of INR<span id="total">0</span>/-`;
 
     // append to theatre.
     theatre.appendChild(pTag);
 
-    document.getElementById("bookTickets").appendChild(theatre)
+    document.getElementById("bookTickets").appendChild(theatre);
 
+    // add eventListener to each seat to select it.
+    document.querySelectorAll(".seat").forEach(seatItem => {
+        seatItem.addEventListener("click", handleSeatSelection);
+    });
+
+}
+
+function randomTicketPrice(min, max) {
+    return ticketPrice = Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Handle price of selected seats.
+function calculateTotalTicketPrice() {
+    let selectedSeats = document.querySelectorAll('.row .seat.selected');
+    console.log(selectedSeats.length + " --------- " + ticketPrice);
+    document.getElementById("count").innerText = selectedSeats.length;
+    document.getElementById("total").innerText = selectedSeats.length * ticketPrice;
+}
+
+function handleSeatSelection(event) {
+    console.log("SEAT Selected Event --> " + event.target.className);
+    event.target.className = "seat selected";
+    calculateTotalTicketPrice();
 }
 
 export { renderTicketBookingPage };
