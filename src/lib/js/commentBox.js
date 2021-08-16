@@ -1,5 +1,7 @@
 import { CommentTree } from "./comment";
 
+let currentCommentTreeF = null;
+
 function initializeCommentSection() {
 
     document.querySelector("#commentSubSection").innerHTML = null;
@@ -14,13 +16,15 @@ function initializeCommentSection() {
         eventListenerForReplyButton();
     }
 
-    renderUIForCommentsTree(JSON.parse(comments));
+    currentCommentTreeF = JSON.parse(comments);
+
+    renderUIForCommentsTree(currentCommentTreeF);
 }
 
 // When user clicks "add comment" using event.target.id find out if it is parent comment or child comment
 function addComment(event) {
-    if (document.getElementById("commentSubSection"))
-        document.getElementById("commentSubSection").innerHTML = null;
+    if (document.querySelector("#commentSubSection"))
+        document.querySelector("#commentSubSection").innerHTML = null;
 
     let currentCommentTree = JSON.parse(localStorage.getItem("comment"));
 
@@ -33,16 +37,6 @@ function addComment(event) {
         currentCommentTree.childComments.push(newCommentNode);
         localStorage.setItem("comment", JSON.stringify(currentCommentTree));
         renderUIForCommentsTree(currentCommentTree);
-    } else if (event.target.id == "addsubcomment") {
-        for (let y = 0; y < currentCommentTree.childComments.length; y++) {
-            if (currentCommentTree.childComments[y].id == event.target.parentNode.getAttribute("data-parentId")) {
-                let newChildComment = new CommentTree(event.target.value);
-                newChildComment.parentID = event.target.parentNode.getAttribute("data-parentId");
-                currentCommentTree.childComments[y].childComments.push(newChildComment);
-                localStorage.setItem("comment", JSON.stringify(currentCommentTree));
-                renderUIForCommentsTree(currentCommentTree);
-            }
-        }
     }
 
     document.getElementById("commentText").value = "";
@@ -50,6 +44,32 @@ function addComment(event) {
     // add event listener for all comments for reply functionality
     eventListenerForReplyButton();
 }
+
+// recursive method to push the new child comment
+let addNewChildComment = (allComments, event) => {
+
+    console.log("ADD NEW CHILD COMMENT ------- ");
+
+    // re-render the comment list
+    document.querySelector("#commentSubSection").innerHTML = "";
+
+    for (let i of allComments) {
+        if (i != "") {
+            let parentId = event.target.parentNode.getAttribute("data-parentId")
+            if (i.id == parentId) {
+                let newChildComment = new CommentTree(event.target.value);
+                newChildComment.parentID = parentId;
+                i.childComments.push(newChildComment);
+            } else if (i.childComments.length > 0) {
+                addNewChildComment(i.childComments, event);
+            }
+        }
+    }
+    // Set to LocalStorage
+    localStorage.setItem("comment", JSON.stringify(currentCommentTreeF));
+};
+
+
 
 function visualizeComment(data, padding) {
 
@@ -69,7 +89,9 @@ function visualizeComment(data, padding) {
 
     //mainCommentDiv.appendChild(replySpan);
 
-    document.querySelector("#commentSubSection").appendChild(mainCommentDiv);
+    //document.querySelector("#commentSubSection").appendChild(mainCommentDiv);
+
+    return mainCommentDiv;
 }
 
 let createReplyButtonCommentView = (data) => {
@@ -84,15 +106,20 @@ let createReplyButtonCommentView = (data) => {
 }
 
 function renderUIForCommentsTree(data, padding = 0) {
+
+    // Clear container before painting
+    //document.querySelector("#commentSubSection").innerHTML = "";
+
     for (let x = 0; x < data.childComments.length; x++) {
         if (data.childComments[x] != "") {
-            visualizeComment(data.childComments[x], padding);
+            document.querySelector("#commentSubSection").appendChild(visualizeComment(data.childComments[x], padding));
             if (data.childComments[x].childComments.length > 1) {
                 renderUIForCommentsTree(data.childComments[x], padding + 20);
             }
         }
 
     }
+
     padding = 0;
 }
 
@@ -104,7 +131,8 @@ function eventListenerForReplyButton() {
             e.target.parentNode.appendChild(createReplyButtonCommentView(e.target.parentNode));
         } else if (e.target.innerText == "Add Comment") {
             e.target.value = document.querySelector(".subReplyInput").value;
-            addComment(e);
+            addNewChildComment(currentCommentTreeF.childComments, e);
+            renderUIForCommentsTree(currentCommentTreeF);
         }
     })
 }
