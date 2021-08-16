@@ -41,3 +41,29 @@
     font-size: small;
     font-weight: 100;
 }
+
+.commentsArea {
+    margin-left: 10%;
+    background-position: 10px 12px;
+    background-repeat: no-repeat;
+    width: 80%;
+    font-size: 16px;
+    padding: 8px 20px 8px 20px;
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+    border-radius: 5px;
+    margin-top: 0px;
+    text-overflow: ellipsis;
+}
+
+#commentSubSection {
+    margin-bottom: 20%;
+}
+
+.subCommentReplyButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    color: rgb(248, 68, 100);
+}

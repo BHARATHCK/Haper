@@ -130,6 +130,9 @@ var renderModule = {
         document.getElementById("eventsData").innerHTML = null;
         document.getElementById("detailsPage").innerHTML = null;
         document.getElementById("bookTickets").innerHTML = null;
+        document.getElementById("commentSection").innerHTML = null;
+        if (document.getElementById("commentSubSection"))
+            document.getElementById("commentSubSection").innerHTML = null;
     }
 };
 

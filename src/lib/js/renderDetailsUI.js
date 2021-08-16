@@ -1,4 +1,5 @@
 import { handleRoute } from "./router";
+import { addComment, initializeCommentSection } from "./commentBox";
 
 function renderDetailsPageForSpecificID(data) {
 
@@ -135,8 +136,36 @@ function renderDetailsPageForSpecificID(data) {
     document.getElementById("detailsPage").appendChild(detailsWrapperDiv);
     document.getElementById("detailsPage").appendChild(detailsContainerAttributes);
 
+    // Comment Section
+    let commentDiv = document.createElement("div");
+    commentDiv.className = "commentBox";
+
+    let textArea = document.createElement("textarea");
+    textArea.id = "commentText";
+    textArea.rows = 4;
+    textArea.cols = 50;
+
+    commentDiv.appendChild(textArea);
+
+
+    let addCommentButton = document.createElement("button");
+    addCommentButton.className = "addCommentButton";
+    addCommentButton.id = "mainCommentButton";
+    addCommentButton.innerText = "Add Comment";
+
+    commentDiv.appendChild(addCommentButton);
+
+    document.getElementById("commentSection").appendChild(commentDiv);
+
+    //Event listener for adding comments
+    document.querySelector(".addCommentButton").addEventListener("click", (e) => {
+        addComment(e);
+    })
+
     // add Event Listener to button for booking tickets.
     document.querySelector(".details-movie-book-tickets").addEventListener("click", handleRoute);
+
+    initializeCommentSection();
 
 }
 
