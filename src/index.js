@@ -22,7 +22,6 @@ document.querySelector(".dropbtn").addEventListener("click", invokeLocationSelec
 // eslint-disable-next-line no-undef
 document.querySelectorAll(".locationImageSelection").forEach(
     item => {
-        console.log(item);
         item.addEventListener("click", changeLocationImage);
     }
 );
@@ -30,5 +29,3 @@ document.querySelectorAll(".locationImageSelection").forEach(
 document.querySelectorAll(".subMenu").forEach(item => {
     item.addEventListener("click", handleRoute);
 });
-
-console.log('hello world')

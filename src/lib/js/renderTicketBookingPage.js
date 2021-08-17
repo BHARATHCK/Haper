@@ -1,7 +1,6 @@
 let ticketPrice;
 
 function renderTicketBookingPage(data) {
-    console.log("BOOK TICKETS FOR ~~~~~~~~~~~ " + data.title);
 
     let theatre = document.createElement("div");
     theatre.className = "theatre";
@@ -101,13 +100,11 @@ function randomTicketPrice(min, max) {
 // Handle price of selected seats.
 function calculateTotalTicketPrice() {
     let selectedSeats = document.querySelectorAll('.row .seat.selected');
-    console.log(selectedSeats.length + " --------- " + ticketPrice);
     document.getElementById("count").innerText = selectedSeats.length;
     document.getElementById("total").innerText = selectedSeats.length * ticketPrice;
 }
 
 function handleSeatSelection(event) {
-    console.log("SEAT Selected Event --> " + event.target.className);
     event.target.className = "seat selected";
     calculateTotalTicketPrice();
 }

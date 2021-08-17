@@ -6,15 +6,11 @@ import { renderTicketBookingPage } from "./renderTicketBookingPage";
 var renderModule = {
     renderOnPageUrlChange: () => {
         let currentLocation = location.hash.substr(13);
-        console.log(currentLocation)
         if (currentLocation === "movies" || currentLocation === "") {
-            console.log("MOVIES Data Loaded");
 
             renderModule.renderSpecificItem(movies, "moviesData");
 
         } else if (currentLocation === "events") {
-            console.log("EVENTS Data Loaded");
-            console.log("MOVIES Data Loaded");
             let movies = [{
                     name: "Event 1",
                     id: 1,
@@ -35,8 +31,6 @@ var renderModule = {
             renderModule.renderSpecificItem(movies, "eventsData");
 
         } else if (currentLocation === "sports") {
-            console.log("SPORTS Data Loaded");
-            console.log("MOVIES Data Loaded");
             let movies = [{
                     name: "Sport 1",
                     id: 1,
@@ -57,10 +51,7 @@ var renderModule = {
             renderModule.renderSpecificItem(movies, "sportsData");
 
         } else if (currentLocation.substr(0, 11) == "itemDetails") {
-            console.log(currentLocation.substr(12));
-            console.log("Movies : " + movies);
             let movieData = movies.filter(item => item.id == currentLocation.substr(12));
-            console.log("MOVIE ----------> " + movieData[0].title);
 
             renderModule.renderNullbeforedataisSet();
 
@@ -70,9 +61,7 @@ var renderModule = {
             let ticketDetails = movies.filter(ticketItem => ticketItem.id == currentLocation.substr(12));
             renderModule.renderNullbeforedataisSet();
             renderTicketBookingPage(ticketDetails[0]);
-            console.log("PLEASE SELECT TICKETS TO BOOK ---> " + currentLocation.substr(12));
         } else {
-            console.log("404");
             location.href = "404.html";
         }
     },

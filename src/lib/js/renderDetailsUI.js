@@ -3,8 +3,6 @@ import { addComment, initializeCommentSection } from "./commentBox";
 
 function renderDetailsPageForSpecificID(data) {
 
-    console.log("MOVIE DATA RECEIVED -----> " + data);
-
     let detailsWrapperDiv = document.createElement("div");
     detailsWrapperDiv.className = "details-wrapper";
 
@@ -66,7 +64,6 @@ function renderDetailsPageForSpecificID(data) {
     let bookTicketButton = document.createElement("button");
     bookTicketButton.className = "details-movie-book-tickets";
     bookTicketButton.id = "bookTickets:" + data.id;
-    console.log("BUTTON ID -------> " + bookTicketButton.id);
     bookTicketButton.innerText = "Book Tickets";
 
     detailsMovie.appendChild(bookTicketButton);
@@ -165,7 +162,7 @@ function renderDetailsPageForSpecificID(data) {
     // add Event Listener to button for booking tickets.
     document.querySelector(".details-movie-book-tickets").addEventListener("click", handleRoute);
 
-    initializeCommentSection();
+    initializeCommentSection(data);
 
 }
 
