@@ -15,6 +15,7 @@
     <link rel='stylesheet' type='text/css' media='screen' href='./lib/css/UIBody.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='./lib/css/detailsPage.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='./lib/css/theatre.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='./lib/css/signIn.css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer"
     />
 </head>
@@ -23,7 +24,8 @@
 
     <div class="container-left">
         <img src="./assets/favicon.svg" alt="Haper Logo" width="70px" height="70px" style="padding: 5px;">
-        <input type="search" placeholder="SEARCH..." class="searchbar" />
+        <input type="text" placeholder="SEARCH..." class="searchbar" autofocus="true">
+        <div id="autocomplete-results"></div>
     </div>
 
     <div class="container-right">
@@ -33,16 +35,16 @@
                 <i class="fas fa-sort-down"></i>
             </div>
         </div>
-        <button class="sign-in">Sign in</button>
+        <button class="sign-in" id="signIn">Sign in</button>
         <div class="hamburger-menu"><i class="fa fa-bars"></i></div>
     </div>
 </header>
 
 <body>
     <div class="sub-header">
-        <a id="movies" class="subMenu">Movies</a>
-        <a id="events" class="subMenu">Events</a>
-        <a id="sports" class="subMenu">Sports</a>
+        <a id="trending" class="subMenu">Trending</a>
+        <a id="comedy" class="subMenu">Comedy</a>
+        <a id="history" class="subMenu">History</a>
     </div>
 
     <div class="location-picker-card">
@@ -51,7 +53,7 @@
 
         </div>
     </div>
-
+    <div id="signInContainer"></div>
     <div id="moviesData"></div>
     <div id="sportsData"></div>
     <div id="eventsData"></div>
@@ -60,6 +62,29 @@
     <div id="commentSection"></div>
     <div id="commentSubSection"></div>
     <script type="text/javascript" src="./index.js "></script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-analytics.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "REMOVED",
+            authDomain: "REMOVED",
+            projectId: "REMOVED",
+            storageBucket: "REMOVED.appspot.com",
+            messagingSenderId: "REMOVED",
+            appId: "1:REMOVED:web:0a733e4d3e32a9ce00d93f",
+            measurementId: "REMOVED"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
 </body>
 
 <footer class="footer ">

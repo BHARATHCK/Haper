@@ -1,66 +1,80 @@
-import { movies } from "./server";
 import { handleRoute } from "./router";
 import { renderDetailsPageForSpecificID } from "./renderDetailsUI";
 import { renderTicketBookingPage } from "./renderTicketBookingPage";
+import { signUp } from "./signUp";
+import { getMovies } from "./tmdbServer";
+
+let currentMoviesLoaded = null;
+
+let trendingSelection = document.getElementById("trending");
+let comedySelection = document.getElementById("comedy");
+let historySelection = document.getElementById("history");
 
 var renderModule = {
     renderOnPageUrlChange: () => {
         let currentLocation = location.hash.substr(13);
-        if (currentLocation === "movies" || currentLocation === "") {
+        if (currentLocation === "trending" || currentLocation === "") {
 
-            renderModule.renderSpecificItem(movies, "moviesData");
+            //underline and bold the text
+            trendingSelection.style.textDecoration = "underline";
+            trendingSelection.style.fontWeight = "900";
+            comedySelection.style.textDecoration = "none";
+            comedySelection.style.fontWeight = "normal";
+            historySelection.style.textDecoration = "none";
+            historySelection.style.fontWeight = "normal";
 
-        } else if (currentLocation === "events") {
-            let movies = [{
-                    name: "Event 1",
-                    id: 1,
-                    date: "20-12-2020"
-                },
-                {
-                    name: "Event 2",
-                    id: 2,
-                    date: "20-12-2019"
-                },
-                {
-                    name: "Event 3",
-                    id: 3,
-                    date: "21-12-2021"
-                }
-            ];
+            // Get the most Trending movies on first load by default.
+            getMoviesByGenre("fetchTrending");
 
-            renderModule.renderSpecificItem(movies, "eventsData");
+        } else if (currentLocation === "comedy") {
 
-        } else if (currentLocation === "sports") {
-            let movies = [{
-                    name: "Sport 1",
-                    id: 1,
-                    date: "20-12-2020"
-                },
-                {
-                    name: "Sport 2",
-                    id: 2,
-                    date: "20-12-2019"
-                },
-                {
-                    name: "Sport 3",
-                    id: 3,
-                    date: "21-12-2021"
-                }
-            ];
+            comedySelection.style.textDecoration = "underline";
+            comedySelection.style.fontWeight = "900";
+            trendingSelection.style.textDecoration = "none";
+            trendingSelection.style.fontWeight = "normal";
+            historySelection.style.textDecoration = "none";
+            historySelection.style.fontWeight = "normal";
 
-            renderModule.renderSpecificItem(movies, "sportsData");
+            getMoviesByGenre("fetchComedyMovies");
+
+        } else if (currentLocation === "history") {
+
+            historySelection.style.textDecoration = "underline";
+            historySelection.style.fontWeight = "900";
+            comedySelection.style.textDecoration = "none";
+            comedySelection.style.fontWeight = "normal";
+            trendingSelection.style.textDecoration = "none";
+            trendingSelection.style.fontWeight = "normal";
+
+            getMoviesByGenre("fetchHistory");
 
         } else if (currentLocation.substr(0, 11) == "itemDetails") {
-            let movieData = movies.filter(item => item.id == currentLocation.substr(12));
+            let movieData = null;
+            if (!currentMoviesLoaded) {
+                getMoviesByGenre("fetchTrending");
+            } else {
+                movieData = currentMoviesLoaded.filter(item => item.id == currentLocation.substr(12));
+            }
 
             renderModule.renderNullbeforedataisSet();
 
             renderDetailsPageForSpecificID(movieData[0]);
 
         } else if (currentLocation.includes("bookTickets")) {
-            let ticketDetails = movies.filter(ticketItem => ticketItem.id == currentLocation.substr(12));
+            let ticketDetails = currentMoviesLoaded.filter(ticketItem => ticketItem.id == currentLocation.substr(12));
+
+            if (!localStorage.getItem("signinToken")) {
+                renderModule.renderNullbeforedataisSet();
+                signUp();
+            } else {
+                renderModule.renderNullbeforedataisSet();
+                renderTicketBookingPage(ticketDetails[0]);
+            }
+
+        } else if (currentLocation.includes("signIn")) {
             renderModule.renderNullbeforedataisSet();
-            renderTicketBookingPage(ticketDetails[0]);
+            console.log("SINGIN PAGE");
+            signUp();
         } else {
             location.href = "404.html";
         }
@@ -77,7 +91,7 @@ var renderModule = {
             div.id = "itemDetails:" + item.id;
 
             let img = document.createElement("img");
-            img.src = item.posterUrl;
+            img.src = "https://image.tmdb.org/t/p/w200" + item.poster_path;
             img.onerror = "this.onerror=null;this.src='https://source.unsplash.com/user/erondu/300x450';"
             img.className = "card-img";
             img.alt = "Movie Poster";
@@ -86,14 +100,14 @@ var renderModule = {
             div.appendChild(document.createElement("br"));
 
             let span = document.createElement("span");
-            span.innerText = item.title;
+            span.innerText = item.title || item.name || item.original_name;
             span.className = "titlecontainer";
             span.id = "itemDetails:" + item.id;
             div.appendChild(span);
             div.appendChild(document.createElement("br"));
 
             let spanGenre = document.createElement("span");
-            spanGenre.innerText = item.genres.join(", ");
+            spanGenre.innerText = item.genre_ids.join(", ");
             spanGenre.className = "genrecontainer";
             spanGenre.id = "itemDetails:" + item.id;
             div.appendChild(spanGenre);
@@ -120,9 +134,23 @@ var renderModule = {
         document.getElementById("detailsPage").innerHTML = null;
         document.getElementById("bookTickets").innerHTML = null;
         document.getElementById("commentSection").innerHTML = null;
+        document.getElementById("signInContainer").innerHTML = null;
         if (document.getElementById("commentSubSection"))
             document.getElementById("commentSubSection").innerHTML = null;
     }
 };
+
+
+let getMoviesByGenre = (movieGenre) => {
+    // TMDB movies
+    getMovies(movieGenre).then(movieData => {
+        currentMoviesLoaded = movieData.results;
+        renderModule.renderSpecificItem(movieData.results, "moviesData");
+    }).catch(error => {
+        console.log(error);
+    });
+}
+
+
 
 export { renderModule };

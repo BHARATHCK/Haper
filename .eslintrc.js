@@ -8,7 +8,8 @@ module.exports = {
         "document": true,
         "localStorage": true,
         "location": true,
-        "window": true
+        "window": true,
+        "fetch": true
     },
     parser: 'babel-eslint',
     parserOptions: {

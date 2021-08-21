@@ -1,6 +1,7 @@
 import NProgress from 'nprogress'
 import { changeLocationImage, invokeLocationSelector } from './lib/Header/header';
 import { handleRoute } from './lib/js/router';
+import { debounceSearchOperation } from './lib/js/searchData';
 
 NProgress.start()
 
@@ -16,16 +17,18 @@ setTimeout(function() {
     NProgress.done()
 }, 3000)
 
-// eslint-disable-next-line no-undef
 document.querySelector(".dropbtn").addEventListener("click", invokeLocationSelector);
 
-// eslint-disable-next-line no-undef
 document.querySelectorAll(".locationImageSelection").forEach(
     item => {
         item.addEventListener("click", changeLocationImage);
     }
 );
 
+document.querySelector(".sign-in").addEventListener("click", handleRoute);
+
 document.querySelectorAll(".subMenu").forEach(item => {
     item.addEventListener("click", handleRoute);
 });
+
+document.querySelector(".searchbar").addEventListener("input", debounceSearchOperation);

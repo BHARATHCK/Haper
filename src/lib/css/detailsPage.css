@@ -123,3 +123,7 @@ button {
     text-overflow: ellipsis;
     color: white;
 }
+
+.commentBox {
+    margin-left: 10%;
+}
