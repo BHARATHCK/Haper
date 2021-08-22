@@ -17,7 +17,7 @@ setTimeout(function() {
     NProgress.done()
 }, 3000)
 
-document.querySelector(".dropbtn").addEventListener("click", invokeLocationSelector);
+//document.querySelector(".dropbtn").addEventListener("click", invokeLocationSelector);
 
 document.querySelectorAll(".locationImageSelection").forEach(
     item => {

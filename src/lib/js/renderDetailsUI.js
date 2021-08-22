@@ -38,7 +38,7 @@ let renderDetailsPage = (data, movieCredits) => {
     detailsMovie.className = "details-movie";
 
     // Movie title
-    let movieTitle = document.createElement("span");
+    let movieTitle = document.createElement("div");
     movieTitle.className = "details-movie-title";
     movieTitle.innerText = data.title || data.name || data.original_name;
 
@@ -158,7 +158,7 @@ let renderDetailsPage = (data, movieCredits) => {
     textArea.id = "commentText";
     textArea.placeholder = "Remember, be nice!"
     textArea.rows = 4;
-    textArea.cols = 50;
+    textArea.cols = 40;
 
     commentDiv.appendChild(textArea);
 

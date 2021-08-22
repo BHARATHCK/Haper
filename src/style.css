@@ -1,9 +1,19 @@
-* {
-    box-sizing: border-box;
-}
-
-body {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-}
+    @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) and (-webkit-min-device-pixel-ratio: 1) {
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+    }
+    
+    @media (max-width: 800px) {
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            margin: 0px;
+        }
+    }
