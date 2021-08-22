@@ -9,7 +9,9 @@ module.exports = {
         "localStorage": true,
         "location": true,
         "window": true,
-        "fetch": true
+        "fetch": true,
+        "db": true,
+        "auth": true
     },
     parser: 'babel-eslint',
     parserOptions: {

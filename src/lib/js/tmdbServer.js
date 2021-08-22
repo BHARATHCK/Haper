@@ -12,17 +12,27 @@ const requests = {
 
 let getMovies = (genre) => {
     return fetch(baseURL + requests[genre]).then(function(data) {
+        if (data.status == 404) {
+            render404Page();
+            return;
+        }
         return data.json();
     }).catch(function(error) {
         console.log(error);
+        render404Page();
     });
 }
 
 let getMovieDetails = (movieID) => {
     return fetch(baseURL + `/movie/${movieID}/credits?api_key=${API_KEY}&language=en-US`).then(credits => {
+        if (credits.status == 404) {
+            render404Page();
+            return;
+        }
         return credits.json();
     }).catch(error => {
         console.log(error);
+        render404Page();
     })
 }
 
@@ -32,8 +42,17 @@ let getMovieByName = (userInputText) => {
         return searchResults.json();
     }).catch(error => {
         console.log(error);
+        render404Page();
     })
 
 }
+
+let render404Page = () => {
+    document.getElementById("moviesData").innerHTML = `
+    <img src="https://i.ibb.co/nmTChk9/404.png" alt="404" width="640px" height="472px">
+    `;
+    document.getElementById("somethingWentWrong").innerHTML = `<h3>Sorry! Something went wrong, we are looking into it</h3>`
+}
+
 
 export { getMovies, getMovieDetails, getMovieByName };

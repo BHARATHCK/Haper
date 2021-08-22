@@ -3,6 +3,7 @@ import { renderDetailsPageForSpecificID } from "./renderDetailsUI";
 import { renderTicketBookingPage } from "./renderTicketBookingPage";
 import { signUp } from "./signUp";
 import { getMovies } from "./tmdbServer";
+import { authGuard } from "./authGuard";
 
 let currentMoviesLoaded = null;
 
@@ -13,6 +14,7 @@ let historySelection = document.getElementById("history");
 var renderModule = {
     renderOnPageUrlChange: () => {
         let currentLocation = location.hash.substr(13);
+        console.log(authGuard(currentLocation));
         if (currentLocation === "trending" || currentLocation === "") {
 
             //underline and bold the text
@@ -63,13 +65,8 @@ var renderModule = {
         } else if (currentLocation.includes("bookTickets")) {
             let ticketDetails = currentMoviesLoaded.filter(ticketItem => ticketItem.id == currentLocation.substr(12));
 
-            if (!localStorage.getItem("signinToken")) {
-                renderModule.renderNullbeforedataisSet();
-                signUp();
-            } else {
-                renderModule.renderNullbeforedataisSet();
-                renderTicketBookingPage(ticketDetails[0]);
-            }
+            renderModule.renderNullbeforedataisSet();
+            renderTicketBookingPage(ticketDetails[0]);
 
         } else if (currentLocation.includes("signIn")) {
             renderModule.renderNullbeforedataisSet();
@@ -129,6 +126,7 @@ var renderModule = {
 
     renderNullbeforedataisSet: () => {
         document.getElementById("moviesData").innerHTML = null;
+        document.getElementById("somethingWentWrong").innerHTML = null;
         document.getElementById("sportsData").innerHTML = null;
         document.getElementById("eventsData").innerHTML = null;
         document.getElementById("detailsPage").innerHTML = null;

@@ -1,3 +1,5 @@
+import { createUser, verifyUser } from "./cloudFireStore";
+
 let signUp = () => {
 
     //Create loginContainer
@@ -22,9 +24,9 @@ let signUp = () => {
     loginWrapper.appendChild(haperLogo);
 
     // Form
-    let form = document.createElement("form");
+    let form = document.createElement("div");
     form.className = "form";
-    form.action = "javascript: submitForm()";
+    //form.action = "javascript: submitForm()";
 
     // username
     let username = document.createElement("input");
@@ -44,11 +46,13 @@ let signUp = () => {
     loginButton.className = "loginButton";
     loginButton.type = "submit";
     loginButton.innerText = "Sign In";
+    loginButton.onclick = signIn;
 
     // Sign Up
     let signUpButton = document.createElement("button");
     signUpButton.className = "signupButton";
     signUpButton.innerText = "Sign Up";
+    signUpButton.onclick = signUpUser;
 
 
     let forgotPassword = document.createElement("div");
@@ -78,8 +82,20 @@ let signUp = () => {
 
 }
 
-function submitForm() {
+function signIn() {
     console.log("FORM SUBMITTED");
+    verifyUser(document.getElementById("username").value, document.getElementById("pass").value).then(() => {
+        document.location.hash = "routechange-trending";
+    })
+}
+
+function signUpUser() {
+    createUser(document.getElementById("username").value, document.getElementById("pass").value).then(() => {
+        // redirect to homepage
+        document.location.hash = "routechange-trending";
+    }).catch(error => {
+        console.log("User not created -- " + error);
+    });
 }
 
 export { signUp };

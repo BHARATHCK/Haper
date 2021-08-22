@@ -1,4 +1,5 @@
 import { renderModule } from './renderUI';
+import { authGuard, toggleButton } from "./authGuard";
 
 function handleRoute(e) {
     location.href = location.origin + location.pathname + '#' + "routechange-" + e.target.id;
@@ -8,11 +9,20 @@ function handleRoute(e) {
 
 // Handle all the url changes - use popstate
 window.addEventListener("popstate", (e) => {
-    renderModule.renderOnPageUrlChange(e);
+    renderOnAuthCheck();
 });
 
-window.onload = function(e) {
-    renderModule.renderOnPageUrlChange(e);
+window.onload = function() {
+    renderOnAuthCheck();
+}
+
+let renderOnAuthCheck = () => {
+    if (authGuard(location.hash.substr(13))) {
+        renderModule.renderOnPageUrlChange();
+        toggleButton("Log Out");
+    } else {
+        document.location.hash = "#routechange-signIn";
+    }
 }
 
 export { handleRoute };

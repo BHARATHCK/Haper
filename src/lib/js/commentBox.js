@@ -1,67 +1,37 @@
-import { CommentTree } from "./comment";
+import { commentJSON, getNewCommentJSON } from "./comment";
+import { addCommentToCollection, getDocumentFromCollection } from "./cloudFireStore";
 
-let currentCommentTreeF = null;
-let currentUserSelectedMovieDetails = null;
+let currentCommentJSON = null;
 
 function initializeCommentSection(data) {
 
-    currentUserSelectedMovieDetails = data;
+    // Check if any comments are registered against current movieID
+    getDocumentFromCollection(data.id).then(commentCollection => {
+        if (commentCollection) {
+            // If comments are registered against current movieID - get the document to perform further op.
+            currentCommentJSON = commentCollection;
+            // add event Listeners to handle reply functionality
+            eventListenerForReplyButton();
+        } else {
+            // If comments are not registered against current movieID - Create one
+            commentJSON.title = data.title;
+            commentJSON.movieId = data.id;
+            addCommentToCollection(commentJSON);
+            currentCommentJSON = commentJSON;
+        }
+
+        renderUIForCommentsTree(currentCommentJSON);
+    });
 
     document.querySelector("#commentSubSection").innerHTML = null;
-
-    // if comments not available create
-    if (!localStorage.getItem("comment")) {
-        let commentsNode = new CommentTree(data.title);
-        let commentsArray = new Array();
-        commentsNode.parentID = data.id;
-        commentsArray.push(commentsNode);
-        localStorage.setItem("comment", JSON.stringify(commentsArray));
-    } else { // If comments exist , add the eventlisteners to reply button.
-        eventListenerForReplyButton();
-    }
-
-    // check if movie specific comments are available using parentID [which is ID of movie]
-    currentCommentTreeF = getCurrentMovieCommentCollection(data);
-
-    //currentCommentTreeF = JSON.parse(localStorage.getItem("comment"));
-
-    renderUIForCommentsTree(currentCommentTreeF);
 }
 
-let getCurrentMovieCommentCollection = (data) => {
-    let moviePresent = false;
-    let movieSpecificComments = JSON.parse(localStorage.getItem("comment"));
-    for (let commentsItem of movieSpecificComments) {
-        if (commentsItem.parentID == data.id) {
-            currentCommentTreeF = commentsItem;
-            moviePresent = true;
-        }
-    }
+let setCurrentMovieCommentCollection = (newCommentText) => {
 
-    if (!moviePresent) {
-        let commentsNode = new CommentTree(data.title);
-        commentsNode.parentID = data.id;
-        let completeCollection = JSON.parse(localStorage.getItem("comment"));
-        completeCollection.push(commentsNode);
-        localStorage.setItem("comment", JSON.stringify(completeCollection));
-        getCurrentMovieCommentCollection(data);
-    }
-
-    return currentCommentTreeF;
-}
-
-let setCurrentMovieCommentCollection = (newComment, data) => {
-    let movieSpecificComments = JSON.parse(localStorage.getItem("comment"));
-    let commentToRender = "";
-    for (let commentsItem of movieSpecificComments) {
-        if (commentsItem.parentID == data.id) {
-            commentsItem.childComments.push(newComment);
-            commentToRender = commentsItem;
-        }
-    }
-    localStorage.setItem("comment", JSON.stringify(movieSpecificComments));
-
-    return commentToRender;
+    let newComment = getNewCommentJSON();
+    newComment.value = newCommentText;
+    currentCommentJSON.childComments.push(newComment);
+    addCommentToCollection(currentCommentJSON);
 }
 
 // When user clicks "add comment" using event.target.id find out if it is parent comment or child comment
@@ -73,11 +43,9 @@ function addComment(event) {
     let commentText = document.getElementById("commentText").value;
 
     if (event.target.id == "mainCommentButton" && commentText != "") {
-        // add new node to the root node "comments"
-        let newCommentNode = new CommentTree(commentText);
-        // Set the comment to localstorage.
-        let commentToRender = setCurrentMovieCommentCollection(newCommentNode, currentUserSelectedMovieDetails);
-        renderUIForCommentsTree(commentToRender);
+
+        setCurrentMovieCommentCollection(commentText);
+        renderUIForCommentsTree(currentCommentJSON);
     }
 
     document.getElementById("commentText").value = "";
@@ -96,23 +64,18 @@ let addNewChildComment = (allComments, event) => {
         if (i != "") {
             let parentId = event.target.parentNode.getAttribute("data-parentId")
             if (i.id == parentId) {
-                let newChildComment = new CommentTree(event.target.value);
-                newChildComment.parentID = parentId;
-                i.childComments.push(newChildComment);
+                let newChildComment1 = getNewCommentJSON();
+                newChildComment1.parentID = parentId;
+                newChildComment1.value = event.target.value;
+                i.childComments.push(newChildComment1);
             } else if (i.childComments.length > 0) {
                 addNewChildComment(i.childComments, event);
             }
         }
     }
-    // Set to LocalStorage
-    let movieSpecificComments = JSON.parse(localStorage.getItem("comment"));
+    // Set to document
+    addCommentToCollection(currentCommentJSON);
 
-    for (let currentItem of movieSpecificComments) {
-        if (currentItem.parentID == currentUserSelectedMovieDetails.id) {
-            currentItem.childComments = allComments;
-        }
-    }
-    localStorage.setItem("comment", JSON.stringify(movieSpecificComments));
 };
 
 
@@ -159,7 +122,7 @@ function renderUIForCommentsTree(data, padding = 0) {
     for (let x = 0; x < data.childComments.length; x++) {
         if (data.childComments[x] != "") {
             document.querySelector("#commentSubSection").appendChild(visualizeComment(data.childComments[x], padding));
-            if (data.childComments[x].childComments.length > 1) {
+            if (data.childComments[x].childComments.length > 0) {
                 renderUIForCommentsTree(data.childComments[x], padding + 20);
             }
         }
@@ -177,9 +140,9 @@ function eventListenerForReplyButton() {
             e.target.parentNode.appendChild(createReplyButtonCommentView(e.target.parentNode));
         } else if (e.target.innerText == "Add Comment") {
             e.target.value = document.querySelector(".subReplyInput").value;
-            currentCommentTreeF = getCurrentMovieCommentCollection(currentUserSelectedMovieDetails);
-            addNewChildComment(currentCommentTreeF.childComments, e);
-            renderUIForCommentsTree(currentCommentTreeF);
+            //currentCommentTreeF = getCurrentMovieCommentCollection(currentUserSelectedMovieDetails);
+            addNewChildComment(currentCommentJSON.childComments, e);
+            renderUIForCommentsTree(currentCommentJSON);
         }
     })
 }

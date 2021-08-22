@@ -80,3 +80,13 @@
     right: 0;
     color: black;
 }
+
+#moviesData {
+    display: flex;
+    justify-content: center;
+}
+
+#somethingWentWrong {
+    margin-top: 0px;
+    text-align: center;
+}
