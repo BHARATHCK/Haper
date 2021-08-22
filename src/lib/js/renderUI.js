@@ -3,7 +3,7 @@ import { renderDetailsPageForSpecificID } from "./renderDetailsUI";
 import { renderTicketBookingPage } from "./renderTicketBookingPage";
 import { signUp } from "./signUp";
 import { getMovies } from "./tmdbServer";
-import { authGuard } from "./authGuard";
+import { getAuthCookie, deleteCookie } from "./authGuard";
 
 let currentMoviesLoaded = null;
 
@@ -14,7 +14,7 @@ let historySelection = document.getElementById("history");
 var renderModule = {
     renderOnPageUrlChange: () => {
         let currentLocation = location.hash.substr(13);
-        console.log(authGuard(currentLocation));
+
         if (currentLocation === "trending" || currentLocation === "") {
 
             //underline and bold the text
@@ -70,8 +70,14 @@ var renderModule = {
 
         } else if (currentLocation.includes("signIn")) {
             renderModule.renderNullbeforedataisSet();
-            console.log("SINGIN PAGE");
-            signUp();
+
+            if (getAuthCookie("auth")) {
+                deleteCookie("auth");
+                document.location.hash = "routechange-trending";
+            } else {
+                console.log("SINGIN PAGE");
+                signUp();
+            }
         } else {
             location.href = "404.html";
         }

@@ -1,4 +1,5 @@
 import { createUser, verifyUser } from "./cloudFireStore";
+import NProgress from 'nprogress'
 
 let signUp = () => {
 
@@ -83,18 +84,23 @@ let signUp = () => {
 }
 
 function signIn() {
+    NProgress.start();
     console.log("FORM SUBMITTED");
     verifyUser(document.getElementById("username").value, document.getElementById("pass").value).then(() => {
         document.location.hash = "routechange-trending";
+        NProgress.done();
     })
 }
 
 function signUpUser() {
+    NProgress.start();
     createUser(document.getElementById("username").value, document.getElementById("pass").value).then(() => {
         // redirect to homepage
         document.location.hash = "routechange-trending";
+        NProgress.done();
     }).catch(error => {
         console.log("User not created -- " + error);
+        NProgress.done();
     });
 }
 

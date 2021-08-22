@@ -1,7 +1,6 @@
 let expires = null;
 
 const secureRoutes = ["bookTickets"];
-const loginRoute = "signIn";
 
 let setAuthCookie = (token) => {
     // set cookie to expire in 1 hr from login
@@ -26,16 +25,22 @@ let authGuard = (route) => {
             if (getAuthCookie("auth")) {
                 return true;
             } else {
-                //if (!i.includes(loginRoute)) {}
-                return i.includes(loginRoute) ? true : false;
+                return false;
             }
+        } else {
+            return true;
         }
     }
     return true;
+}
+
+let deleteCookie = (name) => {
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    toggleButton("Sign In");
 }
 
 function toggleButton(buttonIntent) {
     document.getElementById("signIn").innerText = `${buttonIntent}`;
 }
 
-export { setAuthCookie, authGuard, toggleButton };
+export { setAuthCookie, authGuard, toggleButton, deleteCookie, getAuthCookie };

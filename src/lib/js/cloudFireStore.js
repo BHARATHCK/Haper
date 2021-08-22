@@ -1,4 +1,5 @@
 import { setAuthCookie } from "./authGuard";
+import NProgress from 'nprogress';
 
 let addCommentToCollection = (commentObject) => {
     console.log("Custom Object -> " + commentObject);
@@ -29,9 +30,12 @@ let getDocumentFromCollection = (movieId) => {
 // Create User
 let createUser = (email, password) => {
     try {
+        NProgress.set(0.5);
         return auth.createUserWithEmailAndPassword(email, password).then(user => {
             setAuthCookie(user.refreshToken);
+            NProgress.set(0.7);
         }).catch(function(error) {
+            NProgress.done();
             var errorCode = error.code;
             var errorMessage = error.message;
             console.log(errorMessage, errorCode);
@@ -47,13 +51,16 @@ let createUser = (email, password) => {
 //verifyUser
 let verifyUser = (email, password) => {
     try {
+        NProgress.set(0.5);
         return auth.signInWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 // Signed in
+                NProgress.set(0.7);
                 var user = userCredential.user;
                 console.log("SUCCESSFUL ********* " + user);
                 setAuthCookie(user.refreshToken);
             }).catch(err => {
+                NProgress.done();
                 console.log(err);
                 document.getElementById("username").value = err.message.substring(err.message.indexOf(":") + 1, err.message.length);
                 document.getElementById("pass").value = "";
