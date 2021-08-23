@@ -1,6 +1,7 @@
 import { handleRoute } from "./router";
 import { addComment, initializeCommentSection } from "./commentBox";
 import { getMovieDetails } from "./tmdbServer";
+import { renderCastCard } from "./castAndCrewUI";
 
 function renderDetailsPageForSpecificID(data) {
 
@@ -133,7 +134,6 @@ let renderDetailsPage = (data, movieCredits) => {
 
 
     directorDiv.appendChild(directorTag);
-    directorDiv.appendChild(directorData);
     detailsContainerAttributes.appendChild(directorDiv);
 
     // Cast div
@@ -146,14 +146,19 @@ let renderDetailsPage = (data, movieCredits) => {
 
     let castData = document.createElement("div");
     castData.className = "details-movie-cast-data";
-    castData.innerText = data.actors;
+
 
     directorDiv.appendChild(directorTag);
-    directorDiv.appendChild(directorData);
+    directorDiv.appendChild(renderCastCard(crewDetails));
     detailsContainerAttributes.appendChild(directorDiv);
 
 
     castDiv.appendChild(castTag);
+    // add profilecards for actors [Max 10 actors]
+    movieCredits.cast.length = 10
+    movieCredits.cast.forEach(actorDetails => {
+        castData.appendChild(renderCastCard(actorDetails));
+    });
     castDiv.appendChild(castData);
     detailsContainerAttributes.appendChild(castDiv);
 
