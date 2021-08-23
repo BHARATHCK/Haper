@@ -1,5 +1,30 @@
 import { setAuthCookie } from "./authGuard";
 import NProgress from 'nprogress';
+// Firebase App (the core Firebase SDK) is always required and must be listed first
+import firebase from "firebase/app";
+require('dotenv').config();
+
+import "firebase/auth";
+import "firebase/firestore";
+
+
+const firebaseConfig = {
+    apiKey: process.env.API_KEY,
+    authDomain: process.env.AUTH_DOMAIN,
+    projectId: process.env.PROJ_ID,
+    storageBucket: process.env.STORAGE_BUCKET,
+    messagingSenderId: process.env.MESSAGE_SENDER_ID,
+    appId: process.env.APP_ID,
+    measurementId: process.env.M_ID
+};
+
+// Initialize Firebase
+console.log("INITIALIZING !!!!!!!");
+firebase.initializeApp(firebaseConfig);
+console.log("INITIALIZED");
+
+const db = firebase.firestore();
+const auth = firebase.auth();
 
 let addCommentToCollection = (commentObject) => {
     console.log("Custom Object -> " + commentObject);
