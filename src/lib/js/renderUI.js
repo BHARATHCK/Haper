@@ -137,10 +137,12 @@ var renderModule = {
         document.getElementById("eventsData").innerHTML = null;
         document.getElementById("detailsPage").innerHTML = null;
         document.getElementById("bookTickets").innerHTML = null;
-        document.getElementById("commentSection").innerHTML = null;
         document.getElementById("signInContainer").innerHTML = null;
         if (document.getElementById("commentSubSection"))
-            document.getElementById("commentSubSection").innerHTML = null;
+            document.getElementById("commentSubSection").parentElement.removeChild(document.getElementById("commentSubSection"));
+        if (document.getElementById("commentSection")) {
+            document.getElementById("commentSection").parentElement.removeChild(document.getElementById("commentSection"));
+        }
     }
 };
 

@@ -18,6 +18,18 @@ function renderDetailsPageForSpecificID(data) {
 }
 
 let renderDetailsPage = (data, movieCredits) => {
+    // Create child elements
+
+    let commSec = document.createElement("div");
+    commSec.id = "commentSection";
+
+    let commSubSec = document.createElement("div");
+    commSubSec.id = "commentSubSection";
+
+    document.body.insertBefore(commSec, document.body.lastElementChild);
+    document.body.insertBefore(commSubSec, document.body.lastElementChild);
+
+
     let detailsWrapperDiv = document.createElement("div");
     detailsWrapperDiv.className = "details-wrapper";
 

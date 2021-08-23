@@ -6,6 +6,7 @@
             display: flex;
             min-height: 100vh;
             flex-direction: column;
+            background-color: white;
         }
     }
     
@@ -15,5 +16,6 @@
             min-height: 100vh;
             flex-direction: column;
             margin: 0px;
+            background-color: white;
         }
     }
