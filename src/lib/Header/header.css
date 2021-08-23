@@ -99,6 +99,11 @@
         align-items: center;
         -webkit-box-align: center;
     }
+    .carousel-main {
+        width: 100%;
+        padding: 0%;
+        margin: 0px;
+    }
     .sub-header {
         width: 100%;
         color: white;

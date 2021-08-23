@@ -5,6 +5,8 @@ import { renderCastCard } from "./castAndCrewUI";
 
 function renderDetailsPageForSpecificID(data) {
 
+    document.getElementById("moviesGenreTitle").innerText = "";
+
     let movieCredits = null;
 
     getMovieDetails(data.id).then(credits => {

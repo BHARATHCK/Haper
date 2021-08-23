@@ -4,12 +4,15 @@ import { renderTicketBookingPage } from "./renderTicketBookingPage";
 import { signUp } from "./signUp";
 import { getMovies } from "./tmdbServer";
 import { getAuthCookie, deleteCookie } from "./authGuard";
+import { getCarouselDiv, initializeCarousel, carouselInterval } from "./carousel";
 
 let currentMoviesLoaded = null;
+let carouselImages = [];
 
 let trendingSelection = document.getElementById("trending");
 let comedySelection = document.getElementById("comedy");
 let historySelection = document.getElementById("history");
+let moviesGenreTitle = document.getElementById("moviesGenreTitle");
 
 var renderModule = {
     renderOnPageUrlChange: () => {
@@ -24,6 +27,8 @@ var renderModule = {
             comedySelection.style.fontWeight = "normal";
             historySelection.style.textDecoration = "none";
             historySelection.style.fontWeight = "normal";
+            moviesGenreTitle.innerText = "Trending Now";
+            moviesGenreTitle.style.fontWeight = 800;
 
             // Get the most Trending movies on first load by default.
             getMoviesByGenre("fetchTrending");
@@ -36,6 +41,8 @@ var renderModule = {
             trendingSelection.style.fontWeight = "normal";
             historySelection.style.textDecoration = "none";
             historySelection.style.fontWeight = "normal";
+            moviesGenreTitle.innerText = "Comedy";
+            moviesGenreTitle.style.fontWeight = 800;
 
             getMoviesByGenre("fetchComedyMovies");
 
@@ -47,12 +54,16 @@ var renderModule = {
             comedySelection.style.fontWeight = "normal";
             trendingSelection.style.textDecoration = "none";
             trendingSelection.style.fontWeight = "normal";
+            moviesGenreTitle.innerText = "History";
+            moviesGenreTitle.style.fontWeight = 800;
 
             getMoviesByGenre("fetchHistory");
 
         } else if (currentLocation.substr(0, 11) == "itemDetails") {
             let movieData = null;
             if (!currentMoviesLoaded) {
+                moviesGenreTitle.innerText = "Trending Now";
+                moviesGenreTitle.style.fontWeight = 800;
                 getMoviesByGenre("fetchTrending");
             } else {
                 movieData = currentMoviesLoaded.filter(item => item.id == currentLocation.substr(12));
@@ -84,6 +95,14 @@ var renderModule = {
     },
 
     renderSpecificItem: (data, renderId) => {
+
+        // Remove data before setting
+        renderModule.renderNullbeforedataisSet();
+
+        //Render Carousel First
+        document.getElementById("carousel-wrapper").appendChild(getCarouselDiv(carouselImages));
+        // Initialize carousel
+        initializeCarousel();
 
         let divMain = document.createElement("div");
         divMain.className = "displayArea";
@@ -120,13 +139,16 @@ var renderModule = {
 
         });
 
-        renderModule.renderNullbeforedataisSet();
         document.getElementById(renderId).appendChild(divMain);
         document.getElementById(renderId).appendChild(document.createElement("br"));
 
         document.querySelectorAll(".card").forEach(cardItem => {
             cardItem.addEventListener("click", handleRoute);
         });
+
+    },
+
+    renderCarousel: () => {
 
     },
 
@@ -143,6 +165,14 @@ var renderModule = {
         if (document.getElementById("commentSection")) {
             document.getElementById("commentSection").parentElement.removeChild(document.getElementById("commentSection"));
         }
+        // Remove carousel
+        if (document.getElementById("carousel-wrapper")) {
+            document.getElementById("carousel-wrapper").innerHTML = null;
+        }
+        // remove the timeout
+        if (carouselInterval) {
+            window.clearInterval(carouselInterval);
+        }
     }
 };
 
@@ -151,10 +181,17 @@ let getMoviesByGenre = (movieGenre) => {
     // TMDB movies
     getMovies(movieGenre).then(movieData => {
         currentMoviesLoaded = movieData.results;
+        getBackDropsForCarousel(currentMoviesLoaded);
         renderModule.renderSpecificItem(movieData.results, "moviesData");
     }).catch(error => {
         console.log(error);
     });
+}
+
+let getBackDropsForCarousel = (data) => {
+    for (let movieObj = 0; movieObj < 6; movieObj++) {
+        carouselImages.push(data[movieObj].backdrop_path);
+    }
 }
 
 
