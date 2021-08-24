@@ -11,7 +11,7 @@ let getCarouselDiv = (carouselBackDrops) => {
         } else {
             img.className = "carousel__photo"
         }
-        img.src = "https://image.tmdb.org/t/p/original" + backDrop;
+        img.src = "https://image.tmdb.org/t/p/w780" + backDrop;
 
         carouselDiv.appendChild(img);
     });
