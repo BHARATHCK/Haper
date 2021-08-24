@@ -2,7 +2,6 @@ import { setAuthCookie } from "./authGuard";
 import NProgress from 'nprogress';
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import firebase from "firebase/app";
-require('dotenv').config();
 
 import "firebase/auth";
 import "firebase/firestore";
