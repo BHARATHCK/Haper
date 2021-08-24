@@ -175,6 +175,20 @@
         line-height: 1;
         margin: 5px;
     }
+    .commentTitle {
+        margin-left: 10%;
+        margin-bottom: 5%;
+        margin-top: 2%;
+        font-family: Roboto;
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 1.17;
+        color: rgb(0, 0, 0);
+    }
+    .details-movie-runtime {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
 }
 
 @media (max-width: 800px) {
@@ -350,5 +364,18 @@
         font-weight: normal;
         line-height: 1;
         margin: 5px;
+    }
+    .commentTitle {
+        margin-top: 2%;
+        font-family: Roboto;
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 1.17;
+        color: rgb(0, 0, 0);
+        margin-bottom: 4%;
+    }
+    .details-movie-runtime {
+        margin-left: 2%;
+        margin-right: 2%;
     }
 }

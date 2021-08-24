@@ -9,10 +9,22 @@ import { getCarouselDiv, initializeCarousel, carouselInterval } from "./carousel
 let currentMoviesLoaded = null;
 let carouselImages = [];
 
+let genreConfig = {
+    28: "Action     ",
+    12: "Adventure ",
+    16: "Animation  ",
+    35: "Comedy     ",
+    80: "Crime      ",
+    99: "Documentary",
+    18: "Drama      ",
+    10751: "Family     ",
+    14: "Fantasy    ",
+    36: "History    ",
+}
+
 let trendingSelection = document.getElementById("trending");
 let comedySelection = document.getElementById("comedy");
 let historySelection = document.getElementById("history");
-let moviesGenreTitle = document.getElementById("moviesGenreTitle");
 
 var renderModule = {
     renderOnPageUrlChange: () => {
@@ -27,11 +39,9 @@ var renderModule = {
             comedySelection.style.fontWeight = "normal";
             historySelection.style.textDecoration = "none";
             historySelection.style.fontWeight = "normal";
-            moviesGenreTitle.innerText = "Trending Now";
-            moviesGenreTitle.style.fontWeight = 800;
 
             // Get the most Trending movies on first load by default.
-            getMoviesByGenre("fetchTrending");
+            getMoviesByGenre("fetchTrending", "Trending Now");
 
         } else if (currentLocation === "comedy") {
 
@@ -41,10 +51,8 @@ var renderModule = {
             trendingSelection.style.fontWeight = "normal";
             historySelection.style.textDecoration = "none";
             historySelection.style.fontWeight = "normal";
-            moviesGenreTitle.innerText = "Comedy";
-            moviesGenreTitle.style.fontWeight = 800;
 
-            getMoviesByGenre("fetchComedyMovies");
+            getMoviesByGenre("fetchComedyMovies", "Comedy");
 
         } else if (currentLocation === "history") {
 
@@ -54,17 +62,13 @@ var renderModule = {
             comedySelection.style.fontWeight = "normal";
             trendingSelection.style.textDecoration = "none";
             trendingSelection.style.fontWeight = "normal";
-            moviesGenreTitle.innerText = "History";
-            moviesGenreTitle.style.fontWeight = 800;
 
-            getMoviesByGenre("fetchHistory");
+            getMoviesByGenre("fetchHistory", "History");
 
         } else if (currentLocation.substr(0, 11) == "itemDetails") {
             let movieData = null;
             if (!currentMoviesLoaded) {
-                moviesGenreTitle.innerText = "Trending Now";
-                moviesGenreTitle.style.fontWeight = 800;
-                getMoviesByGenre("fetchTrending");
+                getMoviesByGenre("fetchTrending", "Trending Now");
             } else {
                 movieData = currentMoviesLoaded.filter(item => item.id == currentLocation.substr(12));
             }
@@ -94,7 +98,7 @@ var renderModule = {
         }
     },
 
-    renderSpecificItem: (data, renderId) => {
+    renderSpecificItem: (data, renderId, title) => {
 
         // Remove data before setting
         renderModule.renderNullbeforedataisSet();
@@ -103,6 +107,11 @@ var renderModule = {
         document.getElementById("carousel-wrapper").appendChild(getCarouselDiv(carouselImages));
         // Initialize carousel
         initializeCarousel();
+
+        let moviesGenreTitle = document.createElement("div");
+        moviesGenreTitle.className = "moviesGenreTitle";
+        moviesGenreTitle.innerText = title;
+        moviesGenreTitle.style.fontWeight = 800;
 
         let divMain = document.createElement("div");
         divMain.className = "displayArea";
@@ -129,7 +138,15 @@ var renderModule = {
             div.appendChild(document.createElement("br"));
 
             let spanGenre = document.createElement("span");
-            spanGenre.innerText = item.genre_ids.join(", ");
+            let genreDetailArr = item.genre_ids.map(item => {
+                if (genreConfig[item]) {
+                    return genreConfig[item].trim()
+                } else {
+                    return ""
+                }
+            }).filter(genre => genre);
+            genreDetailArr.length = 2;
+            spanGenre.innerText = genreDetailArr.join(", ");
             spanGenre.className = "genrecontainer";
             spanGenre.id = "itemDetails:" + item.id;
             div.appendChild(spanGenre);
@@ -139,6 +156,7 @@ var renderModule = {
 
         });
 
+        document.getElementById(renderId).appendChild(moviesGenreTitle);
         document.getElementById(renderId).appendChild(divMain);
         document.getElementById(renderId).appendChild(document.createElement("br"));
 
@@ -177,12 +195,12 @@ var renderModule = {
 };
 
 
-let getMoviesByGenre = (movieGenre) => {
+let getMoviesByGenre = (movieGenre, title) => {
     // TMDB movies
     getMovies(movieGenre).then(movieData => {
         currentMoviesLoaded = movieData.results;
         getBackDropsForCarousel(currentMoviesLoaded);
-        renderModule.renderSpecificItem(movieData.results, "moviesData");
+        renderModule.renderSpecificItem(movieData.results, "moviesData", title);
     }).catch(error => {
         console.log(error);
     });
@@ -196,4 +214,4 @@ let getBackDropsForCarousel = (data) => {
 
 
 
-export { renderModule };
+export { renderModule, genreConfig };

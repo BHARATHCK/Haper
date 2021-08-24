@@ -12,12 +12,15 @@
     }
     
     @media (max-width: 800px) {
+        html {
+            overflow-x: hidden;
+        }
         body {
             display: flex;
             min-height: 100vh;
             flex-direction: column;
             margin: 0px;
             background-color: white;
-            overflow-x: hidden;
+            overflow-x: hidden !important;
         }
     }

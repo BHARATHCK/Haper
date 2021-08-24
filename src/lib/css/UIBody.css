@@ -52,6 +52,7 @@
     }
     #commentSubSection {
         margin-bottom: 20%;
+        margin-top: 5%;
     }
     .subCommentReplyButton {
         background: none;
@@ -72,7 +73,6 @@
         color: black;
     }
     #moviesData {
-        display: flex;
         justify-content: center;
     }
     #somethingWentWrong {
@@ -149,7 +149,7 @@
         left: 47%;
         transform: translate(-50%, -50%) rotate(-45deg);
     }
-    #moviesGenreTitle {
+    .moviesGenreTitle {
         word-break: break-word;
         color: rgb(51, 51, 51);
         font-family: Roboto;

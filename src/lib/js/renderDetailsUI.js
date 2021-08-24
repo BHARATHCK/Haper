@@ -2,10 +2,9 @@ import { handleRoute } from "./router";
 import { addComment, initializeCommentSection } from "./commentBox";
 import { getMovieDetails } from "./tmdbServer";
 import { renderCastCard } from "./castAndCrewUI";
+import { genreConfig } from "./renderUI";
 
 function renderDetailsPageForSpecificID(data) {
-
-    document.getElementById("moviesGenreTitle").innerText = "";
 
     let movieCredits = null;
 
@@ -63,32 +62,28 @@ let renderDetailsPage = (data, movieCredits) => {
     // movie runtime
     let movieRuntime = document.createElement("span");
     movieRuntime.className = "details-movie-runtime";
-    movieRuntime.innerText = data.vote_average;
+    movieRuntime.innerText = "IMDB: " + data.vote_average;
 
     detailsMovie.appendChild(movieRuntime);
-
-    let dot = document.createElement("span");
-    dot.className = "dot";
-
-
-    detailsMovie.appendChild(dot);
-
-
 
     // genre
     let movieGenre = document.createElement("span");
     movieGenre.className = "details-movie-genre";
-    movieGenre.innerText = data.genre_ids.join(", ");
+
+
+    let genreArr = data.genre_ids.map(item => {
+        if (genreConfig[item]) {
+            return genreConfig[item].trim()
+        } else {
+            return ""
+        }
+    }).filter(genre => genre);
+
+    genreArr.length = 3;
+
+    movieGenre.innerText = genreArr.join(", ");
 
     detailsMovie.appendChild(movieGenre);
-    detailsMovie.appendChild(dot);
-
-    // rating
-    let movieRating = document.createElement("span");
-    movieRating.className = "details-movie-rating";
-    movieRating.innerText = data.genre_ids.join(", ");
-
-    detailsMovie.appendChild(movieRating);
 
     // Button
     let bookTicketButton = document.createElement("button");
@@ -170,6 +165,11 @@ let renderDetailsPage = (data, movieCredits) => {
     document.getElementById("detailsPage").appendChild(detailsContainerAttributes);
 
     // Comment Section
+
+    let commentTitle = document.createElement("div");
+    commentTitle.className = "commentTitle";
+    commentTitle.innerText = "Comment Section";
+
     let commentDiv = document.createElement("div");
     commentDiv.className = "commentBox";
 
@@ -189,6 +189,7 @@ let renderDetailsPage = (data, movieCredits) => {
 
     commentDiv.appendChild(addCommentButton);
 
+    document.getElementById("commentSection").appendChild(commentTitle);
     document.getElementById("commentSection").appendChild(commentDiv);
 
     //Event listener for adding comments
