@@ -1,21 +1,6 @@
-import NProgress from 'nprogress'
 import { changeLocationImage } from './lib/Header/header';
 import { handleRoute } from './lib/js/router';
 import { debounceSearchOperation } from './lib/js/searchData';
-
-NProgress.start()
-
-setTimeout(function() {
-    NProgress.set(0.4)
-}, 1000)
-
-setTimeout(function() {
-    NProgress.set(0.7)
-}, 2000)
-
-setTimeout(function() {
-    NProgress.done()
-}, 3000)
 
 //document.querySelector(".dropbtn").addEventListener("click", invokeLocationSelector);
 
