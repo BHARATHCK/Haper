@@ -11,7 +11,8 @@ module.exports = {
         "window": true,
         "fetch": true,
         "db": true,
-        "auth": true
+        "auth": true,
+        "sessionStorage": true
     },
     parser: 'babel-eslint',
     parserOptions: {

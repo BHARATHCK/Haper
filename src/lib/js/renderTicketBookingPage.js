@@ -1,6 +1,12 @@
+import { renderBookingConfirmation } from "./bookingConfirmPage";
+
 let ticketPrice;
+let totalSeatsSelected = 0;
+let seatsDetails = [];
 
 function renderTicketBookingPage(data) {
+
+    seatsDetails.length = 0;
 
     let theatre = document.createElement("div");
     theatre.className = "theatre";
@@ -63,6 +69,7 @@ function renderTicketBookingPage(data) {
         for (let seat = 0; seat < 9; seat++) {
             let seatDiv = document.createElement("div");
             seatDiv.className = "seat";
+            seatDiv.id = `row:${row+1}|seat:${seat+1}`;
 
             // append to row
             rowDiv.appendChild(seatDiv);
@@ -81,8 +88,18 @@ function renderTicketBookingPage(data) {
     pTag.className = "text";
     pTag.innerHTML = `You have selected <span id="count">0</span> seats for a price of INR<span id="total">0</span>/-`;
 
+    let paymentTag = document.createElement("a");
+    paymentTag.className = "paymentLink";
+    paymentTag.innerText = "Proceed to Payment";
+    paymentTag.style.display = "none";
+    paymentTag.addEventListener("click", (e) => {
+        e.preventDefault();
+        renderBookingConfirmation();
+    })
+
     // append to theatre.
     theatre.appendChild(pTag);
+    theatre.appendChild(paymentTag);
 
     document.getElementById("bookTickets").appendChild(theatre);
 
@@ -100,13 +117,41 @@ function randomTicketPrice(min, max) {
 // Handle price of selected seats.
 function calculateTotalTicketPrice() {
     let selectedSeats = document.querySelectorAll('.row .seat.selected');
+    totalSeatsSelected = selectedSeats.length;
     document.getElementById("count").innerText = selectedSeats.length;
     document.getElementById("total").innerText = selectedSeats.length * ticketPrice;
+    getSelectedSeatsDetails(selectedSeats);
+    renderLinkForPayment();
 }
 
 function handleSeatSelection(event) {
-    event.target.className = "seat selected";
+    if (event.target.className == "seat selected") {
+        event.target.className = "seat";
+    } else {
+        event.target.className = "seat selected";
+    }
     calculateTotalTicketPrice();
+}
+
+function renderLinkForPayment() {
+    let paymentLink = document.querySelector(".paymentLink");
+    if (totalSeatsSelected > 0) {
+        if (paymentLink.style.display == "none") {
+            paymentLink.style.display = "block";
+        }
+    } else {
+        paymentLink.style.display = "none"
+    }
+}
+
+function getSelectedSeatsDetails(seatsArr) {
+    let seatsDetails = []
+    for (let seat of seatsArr) {
+        seatsDetails.push(seat.id);
+    }
+
+    sessionStorage.setItem("seatSelection", JSON.stringify(seatsDetails.join(", ")));
+
 }
 
 export { renderTicketBookingPage };

@@ -83,9 +83,14 @@ var renderModule = {
                 renderDetailsPageForSpecificID(movieIdDetails);
             });
         } else if (currentLocation.includes("bookTickets")) {
-            let ticketDetails = currentMoviesLoaded.filter(ticketItem => ticketItem.id == currentLocation.substr(12));
 
             renderModule.renderNullbeforedataisSet();
+
+            if (!currentMoviesLoaded) {
+                getMoviesByGenre("fetchTrending", "Trending Now");
+                return;
+            }
+            let ticketDetails = currentMoviesLoaded.filter(ticketItem => ticketItem.id == currentLocation.substr(12));
             renderTicketBookingPage(ticketDetails[0]);
 
         } else if (currentLocation.includes("signIn")) {
