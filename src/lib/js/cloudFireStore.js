@@ -56,7 +56,9 @@ let createUser = (email, password) => {
     try {
         NProgress.set(0.5);
         return auth.createUserWithEmailAndPassword(email, password).then(user => {
-            setAuthCookie(user.refreshToken);
+            setAuthCookie(user.user.refreshToken, user.user.uid);
+            // inser userProfile Record
+            createUserProfile(user.user);
             NProgress.set(0.7);
         }).catch(function(error) {
             NProgress.done();
@@ -82,7 +84,7 @@ let verifyUser = (email, password) => {
                 NProgress.set(0.7);
                 var user = userCredential.user;
                 console.log("SUCCESSFUL ********* " + user);
-                setAuthCookie(user.refreshToken);
+                setAuthCookie(user.refreshToken, user.uid);
             }).catch(err => {
                 NProgress.done();
                 console.log(err);
@@ -98,4 +100,43 @@ let verifyUser = (email, password) => {
     }
 }
 
-export { addCommentToCollection, getDocumentFromCollection, createUser, verifyUser };
+let createUserProfile = (user) => {
+
+    let userProfileObject = {
+        uid: null,
+        displayName: null,
+        email: null,
+        emailVerified: null,
+        bookedTicketHistory: []
+    }
+
+    userProfileObject.uid = user.uid;
+    userProfileObject.displayName = user.email.substring(0, user.email.indexOf('@'));
+    userProfileObject.emailVerified = user.emailVerified;
+
+    db.collection("userProfile").doc(user.uid.toString()).set(userProfileObject).then(() => {
+        console.log("SUCCESS -- FIRESTORE Document added **************");
+    }).catch((error) => {
+        console.log("ERROR while inserting firestore doc **************" + error.message);
+    });
+}
+
+let updateUserProfileWithTicketBooking = (ticketObject) => {
+
+    db.collection("userProfile").doc(ticketObject.uid).update(ticketObject).then(result => {
+        console.log("Update successfull" + result);
+    }).catch(error => {
+        console.log(error);
+    })
+
+}
+
+let getUserProfile = (uid) => {
+    return db.collection("userProfile").doc(uid).get().then(snapshot => {
+        if (snapshot.exists) {
+            return snapshot.data();
+        }
+    })
+}
+
+export { addCommentToCollection, getDocumentFromCollection, createUser, verifyUser, updateUserProfileWithTicketBooking, getUserProfile };

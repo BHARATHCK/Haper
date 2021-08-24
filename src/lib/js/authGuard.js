@@ -2,13 +2,14 @@ let expires = null;
 
 const secureRoutes = ["bookTickets"];
 
-let setAuthCookie = (token) => {
+let setAuthCookie = (token, uid) => {
     // set cookie to expire in 1 hr from login
     var date = new Date();
     date.setTime(date.getTime() + (1 * 60 * 60 * 1000));
     expires = "; expires=" + date.toUTCString();
     document.cookie = "auth" + "=" + (`${token}`) + expires + "; path=/";
-    toggleButton("Log Out");
+    document.cookie = "uid" + "=" + (`${uid}`) + expires + "; path=/";
+    toggleButton("Profile");
 }
 
 // Get cookie value if it exists.

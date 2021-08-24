@@ -3,8 +3,10 @@ import { renderDetailsPageForSpecificID } from "./renderDetailsUI";
 import { renderTicketBookingPage } from "./renderTicketBookingPage";
 import { signUp } from "./signUp";
 import { getMovies, getMovieByID } from "./tmdbServer";
-import { getAuthCookie, deleteCookie } from "./authGuard";
+import { getAuthCookie } from "./authGuard";
 import { getCarouselDiv, initializeCarousel, carouselInterval } from "./carousel";
+import { renderProfilePage } from "./profilePage";
+import { getUserProfile } from "./cloudFireStore";
 
 let currentMoviesLoaded = null;
 let carouselImages = [];
@@ -98,8 +100,15 @@ var renderModule = {
             renderModule.renderNullbeforedataisSet();
 
             if (getAuthCookie("auth")) {
-                deleteCookie("auth");
-                document.location.hash = "routechange-trending";
+
+                let uid = document.cookie.match(RegExp('(?:^|;\\s*)' + "uid" + '=([^;]*)'));
+
+                getUserProfile(uid[1]).then(data => {
+                    document.querySelector("#signInContainer").innerHTML = null;
+                    document.querySelector("#signInContainer").appendChild(renderProfilePage(data));
+                }).catch(error => {
+                    console.log(error);
+                });
             } else {
                 console.log("SINGIN PAGE");
                 signUp();

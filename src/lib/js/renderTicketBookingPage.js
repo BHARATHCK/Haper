@@ -15,7 +15,7 @@ function renderTicketBookingPage(data) {
     let movieDetailsDiv = document.createElement("div");
     movieDetailsDiv.className = "movie-container";
     movieDetailsDiv.innerText = `Select seats for ${data.title} priced at ${randomTicketPrice(300,400)} INR/- Each.`;
-
+    sessionStorage.setItem("movieName", data.title);
     theatre.appendChild(movieDetailsDiv);
 
     // Create a div for displaying seat topography

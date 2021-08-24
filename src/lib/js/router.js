@@ -11,7 +11,7 @@ function handleRoute(e) {
 window.addEventListener("popstate", () => {
 
     if (authGuard(location.hash.substr(13))) {
-        if (getAuthCookie("auth")) { toggleButton("Log Out"); }
+        if (getAuthCookie("auth")) { toggleButton("Profile"); }
         renderModule.renderOnPageUrlChange();
     } else {
         // Sign in page
@@ -23,7 +23,7 @@ window.addEventListener("popstate", () => {
 });
 
 window.onload = function() {
-    if (getAuthCookie("auth")) { toggleButton("Log Out"); }
+    if (getAuthCookie("auth")) { toggleButton("Profile"); }
     renderModule.renderOnPageUrlChange();
 }
 

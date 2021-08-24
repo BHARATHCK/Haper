@@ -136,4 +136,21 @@
         transition: background-color .4s ease-out;
         -webkit-font-smoothing: antialiased;
     }
+    .profileWrapper {
+        margin-top: 10%;
+        text-align: center;
+    }
+    .profile-picture {
+        width: 70px;
+        height: 70px;
+        border-radius: 40px;
+    }
+    .log-out-button {
+        color: #fff;
+        background: #ff4d4f;
+        border-color: #ff4d4f;
+        text-shadow: 0 -1px 0 rgb(0 0 0 / 12%);
+        box-shadow: 0 2px 0 rgb(0 0 0 / 5%);
+        float: none;
+    }
 }
