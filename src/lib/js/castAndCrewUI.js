@@ -16,7 +16,7 @@ let renderCastCard = (castObject) => {
     img.style.height = "120px";
     img.style.borderRadius = "60px";
     img.style.opacity = "1";
-    img.src = "https://image.tmdb.org/t/p/w185" + castObject.profile_path;
+    img.src = castObject.profile_path ? "https://image.tmdb.org/t/p/w185" + castObject.profile_path : "https://i.ibb.co/270h1Qd/unknown.jpg";
 
     imgDiv.appendChild(img);
     mainDiv.appendChild(imgDiv);

@@ -47,6 +47,16 @@ let getMovieByName = (userInputText) => {
 
 }
 
+let getMovieByID = (id) => {
+    return fetch(`${baseURL}/movie/${id}?api_key=${API_KEY}&language=en-US`).then(result => {
+        return result.json();
+    }).catch(error => {
+        console.log(error);
+        render404Page();
+    })
+
+}
+
 let render404Page = () => {
     document.getElementById("moviesData").innerHTML = `
     <img src="https://i.ibb.co/nmTChk9/404.png" alt="404" width="640px" height="472px">
@@ -55,4 +65,4 @@ let render404Page = () => {
 }
 
 
-export { getMovies, getMovieDetails, getMovieByName };
+export { getMovies, getMovieDetails, getMovieByName, getMovieByID };

@@ -2,7 +2,7 @@ import { handleRoute } from "./router";
 import { renderDetailsPageForSpecificID } from "./renderDetailsUI";
 import { renderTicketBookingPage } from "./renderTicketBookingPage";
 import { signUp } from "./signUp";
-import { getMovies } from "./tmdbServer";
+import { getMovies, getMovieByID } from "./tmdbServer";
 import { getAuthCookie, deleteCookie } from "./authGuard";
 import { getCarouselDiv, initializeCarousel, carouselInterval } from "./carousel";
 
@@ -77,6 +77,11 @@ var renderModule = {
 
             renderDetailsPageForSpecificID(movieData[0]);
 
+        } else if (currentLocation.substr(0, 10) == "searchItem") {
+            getMovieByID(currentLocation.substr(11)).then(movieIdDetails => {
+                renderModule.renderNullbeforedataisSet();
+                renderDetailsPageForSpecificID(movieIdDetails);
+            });
         } else if (currentLocation.includes("bookTickets")) {
             let ticketDetails = currentMoviesLoaded.filter(ticketItem => ticketItem.id == currentLocation.substr(12));
 
@@ -214,4 +219,4 @@ let getBackDropsForCarousel = (data) => {
 
 
 
-export { renderModule, genreConfig };
+export { renderModule, genreConfig, currentMoviesLoaded };

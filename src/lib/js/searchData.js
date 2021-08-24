@@ -1,8 +1,41 @@
 import { getMovieByName } from "./tmdbServer";
+import { handleRoute } from "./router";
 
 let moviesObject = [];
 
 let debounce;
+
+
+function renderResults(results) {
+
+    document.body.addEventListener('click', removeSearchResults, true);
+
+    const resultsWrapper = document.querySelector('.results');
+
+    if (!results.length) {
+        //return searchWrapper.classList.remove('show');
+    }
+
+    const content = results.map((item) => {
+        return `<li id="${"searchItem:"+item.id}">${item.name}</li>`;
+    }).join('');
+
+    //searchWrapper.classList.add('show');
+    document.getElementById("overlayDiv").style.display = "block";
+    resultsWrapper.innerHTML = `<ul>${content}</ul>`;
+
+    document.querySelectorAll("#overlayDiv").forEach(item => {
+        item.addEventListener("click", function searchElement(e) {
+            console.log("REPEATING , Handle it *********************** " + e.target.id);
+            e.preventDefault();
+            handleRoute(e);
+        })
+    })
+}
+
+let removeSearchResults = () => {
+    document.getElementById("overlayDiv").style.display = "none";
+}
 
 function debounceSearchOperation() {
 
@@ -38,13 +71,9 @@ let searchMovies = () => {
             //Limit list to 10 items
             if (moviesObject.length > 10) { moviesObject.length = 10 }
 
-            let autocomplete_results = document.getElementById("autocomplete-results");
+            renderResults(moviesObject);
 
-            for (let i = 0; i < moviesObject.length; i++) {
-                autocomplete_results.innerHTML += '<li>' + moviesObject[i].name + '</li>';
-
-            }
-            autocomplete_results.style.display = 'block';
+            //for (let i = 0; i < moviesObject.length; i++) {autocomplete_results.innerHTML += '<li>' + moviesObject[i].name + '</li>';}
         }
     });
 }

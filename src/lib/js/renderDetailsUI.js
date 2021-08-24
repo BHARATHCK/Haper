@@ -70,20 +70,30 @@ let renderDetailsPage = (data, movieCredits) => {
     let movieGenre = document.createElement("span");
     movieGenre.className = "details-movie-genre";
 
+    if (data.genre_ids) {
+        let genreArr = data.genre_ids.map(item => {
+            if (genreConfig[item]) {
+                return genreConfig[item].trim()
+            } else {
+                return ""
+            }
+        }).filter(genre => genre);
 
-    let genreArr = data.genre_ids.map(item => {
-        if (genreConfig[item]) {
-            return genreConfig[item].trim()
-        } else {
-            return ""
-        }
-    }).filter(genre => genre);
+        genreArr.length = 3;
 
-    genreArr.length = 3;
+        movieGenre.innerText = genreArr.join(", ");
 
-    movieGenre.innerText = genreArr.join(", ");
+        detailsMovie.appendChild(movieGenre);
+    } else if (data.genres) {
+        let genreArr = data.genres.map(item => {
+            return item.name;
+        }).join(", ");
 
-    detailsMovie.appendChild(movieGenre);
+        movieGenre.innerText = genreArr;
+
+        detailsMovie.appendChild(movieGenre);
+    }
+
 
     // Button
     let bookTicketButton = document.createElement("button");
