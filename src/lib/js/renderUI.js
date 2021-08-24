@@ -80,6 +80,7 @@ var renderModule = {
         } else if (currentLocation.substr(0, 10) == "searchItem") {
             getMovieByID(currentLocation.substr(11)).then(movieIdDetails => {
                 renderModule.renderNullbeforedataisSet();
+                currentMoviesLoaded.push(movieIdDetails);
                 renderDetailsPageForSpecificID(movieIdDetails);
             });
         } else if (currentLocation.includes("bookTickets")) {

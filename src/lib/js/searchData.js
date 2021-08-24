@@ -28,6 +28,8 @@ function renderResults(results) {
         item.addEventListener("click", function searchElement(e) {
             console.log("REPEATING , Handle it *********************** " + e.target.id);
             e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
             handleRoute(e);
         })
     })
