@@ -1,13 +1,12 @@
 const baseURL = "https://api.themoviedb.org/3";
-const API_KEY = "REMOVED";
 
 const requests = {
-    fetchTrending: `/trending/all/week?api_key=${API_KEY}&language=en-US`,
-    fetchNetflixOriginals: `/discover/tv?api_key=${API_KEY}&with_networks=213`,
-    fetchComedyMovies: `/discover/movie?api_key=${API_KEY}&with_genres=35`,
-    fetchHorrorMovies: `/discover/movie?api_key=${API_KEY}&with_genres=27`,
-    fetchRomanceMovies: `/discover/movie?api_key=${API_KEY}&with_genres=10749`,
-    fetchHistory: `/discover/movie?api_key=${API_KEY}&with_genres=36`
+    fetchTrending: `/trending/all/week?api_key=${process.env.API_KEY_TMDB}&language=en-US`,
+    fetchNetflixOriginals: `/discover/tv?api_key=${process.env.API_KEY_TMDB}&with_networks=213`,
+    fetchComedyMovies: `/discover/movie?api_key=${process.env.API_KEY_TMDB}&with_genres=35`,
+    fetchHorrorMovies: `/discover/movie?api_key=${process.env.API_KEY_TMDB}&with_genres=27`,
+    fetchRomanceMovies: `/discover/movie?api_key=${process.env.API_KEY_TMDB}&with_genres=10749`,
+    fetchHistory: `/discover/movie?api_key=${process.env.API_KEY_TMDB}&with_genres=36`
 }
 
 let getMovies = (genre) => {
