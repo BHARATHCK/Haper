@@ -23,7 +23,7 @@ let getMovies = (genre) => {
 }
 
 let getMovieDetails = (movieID) => {
-    return fetch(baseURL + `/movie/${movieID}/credits?api_key=${API_KEY}&language=en-US`).then(credits => {
+    return fetch(baseURL + `/movie/${movieID}/credits?api_key=${process.env.API_KEY_TMDB}&language=en-US`).then(credits => {
         if (credits.status == 404) {
             render404Page();
             return;
@@ -37,7 +37,7 @@ let getMovieDetails = (movieID) => {
 
 let getMovieByName = (userInputText) => {
 
-    return fetch(`${baseURL}/search/movie?api_key=${API_KEY}&language=en-US&query=${userInputText}&page=1&include_adult=false`).then(searchResults => {
+    return fetch(`${baseURL}/search/movie?api_key=${process.env.API_KEY_TMDB}&language=en-US&query=${userInputText}&page=1&include_adult=false`).then(searchResults => {
         return searchResults.json();
     }).catch(error => {
         console.log(error);
@@ -47,7 +47,7 @@ let getMovieByName = (userInputText) => {
 }
 
 let getMovieByID = (id) => {
-    return fetch(`${baseURL}/movie/${id}?api_key=${API_KEY}&language=en-US`).then(result => {
+    return fetch(`${baseURL}/movie/${id}?api_key=${process.env.API_KEY_TMDB}&language=en-US`).then(result => {
         return result.json();
     }).catch(error => {
         console.log(error);
