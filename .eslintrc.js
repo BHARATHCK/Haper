@@ -12,7 +12,9 @@ module.exports = {
         "fetch": true,
         "db": true,
         "auth": true,
-        "sessionStorage": true
+        "sessionStorage": true,
+        "importScripts": true,
+        "workbox": true
     },
     parser: 'babel-eslint',
     parserOptions: {

@@ -22,7 +22,6 @@
         "prettier": "^2.0.5"
     },
     "dependencies": {
-        "cloudinary-core": "^2.11.4",
         "firebase": "^8.10.0",
         "nprogress": "^0.2.0",
         "parcel-plugin-compress": "^2.0.2"

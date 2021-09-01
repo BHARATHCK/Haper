@@ -16,6 +16,12 @@
     <link rel='stylesheet' type='text/css' media='screen' href='./lib/css/detailsPage.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='./lib/css/theatre.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='./lib/css/signIn.css'>
+
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="./manifest.webmanifest">
+
+    <!-- Theme color -->
+    <meta name="theme-color" content="#f2134f" />
 </head>
 
 <header class="header">
@@ -58,6 +64,12 @@
     <div id="commentSection"></div>
     <div id="commentSubSection"></div>
     <script type="text/javascript" src="./index.js "></script>
+    <!-- Script for service worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register("/service-worker.js")
+        }
+    </script>
 
 </body>
 
