@@ -14,6 +14,64 @@
             "purpose": "maskable any"
         }
     ],
+    "shortcuts": [{
+            "name": "Trending",
+            "short_name": "Trend",
+            "description": "Trending movies",
+            "url": "/",
+            "icons": [{
+                    "src": "src/trendingIcons/manifest-icon-192.png",
+                    "sizes": "192x192",
+                    "type": "image/png",
+                    "purpose": "maskable any"
+                },
+                {
+                    "src": "src/trendingIcons/manifest-icon-512.png",
+                    "sizes": "512x512",
+                    "type": "image/png",
+                    "purpose": "maskable any"
+                }
+            ]
+        },
+        {
+            "name": "Comedy",
+            "short_name": "Com",
+            "description": "Comedy movies",
+            "url": "/#routechange-comedy",
+            "icons": [{
+                    "src": "src/comedyIcons/manifest-icon-192.png",
+                    "sizes": "192x192",
+                    "type": "image/png",
+                    "purpose": "maskable any"
+                },
+                {
+                    "src": "src/comedyIcons/manifest-icon-512.png",
+                    "sizes": "512x512",
+                    "type": "image/png",
+                    "purpose": "maskable any"
+                }
+            ]
+        },
+        {
+            "name": "History",
+            "short_name": "History",
+            "description": "Historic movies",
+            "url": "/#routechange-history",
+            "icons": [{
+                    "src": "src/historyIcons/manifest-icon-192.png",
+                    "sizes": "192x192",
+                    "type": "image/png",
+                    "purpose": "maskable any"
+                },
+                {
+                    "src": "src/historyIcons/manifest-icon-512.png",
+                    "sizes": "512x512",
+                    "type": "image/png",
+                    "purpose": "maskable any"
+                }
+            ]
+        }
+    ],
     "start_url": "/",
     "background_color": "#3367D6",
     "display": "standalone",
