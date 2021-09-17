@@ -60,17 +60,23 @@ let createUser = (email, password) => {
             // inser userProfile Record
             createUserProfile(user.user);
             NProgress.set(0.7);
+            return true;
         }).catch(function(error) {
             NProgress.done();
             var errorCode = error.code;
             var errorMessage = error.message;
             console.log(errorMessage, errorCode);
+            document.getElementById("username").value = error.message.substring(error.message.indexOf(":") + 1, error.message.length);
+            document.getElementById("pass").value = "";
+            document.getElementById("username").style.boxShadow = "0 0 3px #CC0000";
+            return false;
         });
     } catch (err) {
         console.log(err);
         document.getElementById("username").value = err.message.substring(err.message.indexOf(":") + 1, err.message.length);
         document.getElementById("pass").value = "";
         document.getElementById("username").style.boxShadow = "0 0 3px #CC0000";
+        return false;
     }
 }
 
@@ -85,18 +91,21 @@ let verifyUser = (email, password) => {
                 var user = userCredential.user;
                 console.log("SUCCESSFUL ********* " + user);
                 setAuthCookie(user.refreshToken, user.uid);
+                return true;
             }).catch(err => {
                 NProgress.done();
                 console.log(err);
                 document.getElementById("username").value = err.message.substring(err.message.indexOf(":") + 1, err.message.length);
                 document.getElementById("pass").value = "";
                 document.getElementById("username").style.boxShadow = "0 0 3px #CC0000";
+                return false;
             })
     } catch (err) {
         console.log(err);
         document.getElementById("username").value = err.message.substring(err.message.indexOf(":") + 1, err.message.length);
         document.getElementById("pass").value = "";
         document.getElementById("username").style.boxShadow = "0 0 3px #CC0000";
+        return false;
     }
 }
 

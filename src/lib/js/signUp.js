@@ -55,11 +55,6 @@ let signUp = () => {
     signUpButton.innerText = "Sign Up";
     signUpButton.onclick = signUpUser;
 
-
-    let forgotPassword = document.createElement("div");
-    forgotPassword.className = "forgotPassword";
-    forgotPassword.innerText = "Forgotten Password?";
-
     let divider = document.createElement("div");
     divider.className = "divider";
 
@@ -71,7 +66,6 @@ let signUp = () => {
 
     form.appendChild(username);
     form.appendChild(password);
-    form.appendChild(forgotPassword);
     form.appendChild(loginButton);
     form.appendChild(divider);
     form.appendChild(signUpButton);
@@ -86,7 +80,10 @@ let signUp = () => {
 function signIn() {
     NProgress.start();
     console.log("FORM SUBMITTED");
-    verifyUser(document.getElementById("username").value, document.getElementById("pass").value).then(() => {
+    verifyUser(document.getElementById("username").value, document.getElementById("pass").value).then((res) => {
+        if (!res) {
+            return null;
+        }
         document.location.hash = "routechange-trending";
         NProgress.done();
     })
@@ -94,8 +91,11 @@ function signIn() {
 
 function signUpUser() {
     NProgress.start();
-    createUser(document.getElementById("username").value, document.getElementById("pass").value).then(() => {
+    createUser(document.getElementById("username").value, document.getElementById("pass").value).then((res) => {
         // redirect to homepage
+        if (!res) {
+            return null;
+        }
         document.location.hash = "routechange-trending";
         NProgress.done();
     }).catch(error => {
