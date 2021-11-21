@@ -49,6 +49,13 @@ let signUp = () => {
     loginButton.innerText = "Sign In";
     loginButton.onclick = signIn;
 
+    // Guest Login
+  let guestLogin = document.createElement('button')
+  guestLogin.className = 'signupButton'
+  guestLogin.type = 'submit'
+  guestLogin.innerText = 'Guest Log In'
+  guestLogin.onclick = guestSignIn
+
     // Sign Up
     let signUpButton = document.createElement("button");
     signUpButton.className = "signupButton";
@@ -68,6 +75,7 @@ let signUp = () => {
     form.appendChild(password);
     form.appendChild(loginButton);
     form.appendChild(divider);
+    form.appendChild(guestLogin)
     form.appendChild(signUpButton);
 
     loginWrapper.appendChild(form);
@@ -87,6 +95,20 @@ function signIn() {
         document.location.hash = "routechange-trending";
         NProgress.done();
     })
+}
+
+function guestSignIn() {
+  NProgress.start()
+  console.log('FORM SUBMITTED')
+  verifyUser(process.env.GUEST_USERNAME, process.env.GUEST_PASSWORD).then(
+    (res) => {
+      if (!res) {
+        return null
+      }
+      document.location.hash = 'routechange-trending'
+      NProgress.done()
+    },
+  )
 }
 
 function signUpUser() {
